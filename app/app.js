@@ -1,16 +1,22 @@
 if (Meteor.isClient) {
   sayHello = function sayHello () {
     console.log('hello world');
-    var c1 = Tracker.currentComputation;
-    debugger;
 
-    Tracker.autorun(function inner () {
-      var c2 = Tracker.currentComputation;
-      console.log('inner autorun!');
-      console.log('is active? ' + Tracker.active);
-      debugger;
+    Tracker.afterFlush(function () {
+      console.log('after flush');
     });
   };
 
   computation = Tracker.autorun(sayHello);
+
+  invalidate = function () {
+    computation.invalidate();
+    computation.invalidate();
+    computation.invalidate();
+    computation.invalidate();
+    computation.invalidate();
+    computation.invalidate();
+    Tracker.flush();
+    console.log('called invalidate()');
+  };
 }
