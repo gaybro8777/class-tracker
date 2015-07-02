@@ -1,16 +1,30 @@
 Items = new Mongo.Collection('items');
 
 if (Meteor.isClient) {
-  Session.setDefault('title', 'Item 0');
+  Meteor.subscribe('items');
 
-  computation = Tracker.autorun(function () {
-    Meteor.subscribe('item', Session.get('title'));
+  reportInvalidation = function reportInvalidation () {
+    if (Tracker.active) {
+      var c = Tracker.currentComputation;
+      c.onInvalidate(function reportInvalidation () {
+        console.trace("computation invalidated: " + c._id)
+      });
+    }
+  };
+
+  Template.LastItem.helpers({
+    item: function () {
+      var cursor = Items.find();
+      var item = cursor.fetch().pop();
+      reportInvalidation();
+      return item;
+    }
   });
 }
 
 if (Meteor.isServer) {
-  Meteor.publish('item', function (title) {
-    return Items.find({title: title});
+  Meteor.publish('items', function () {
+    return Items.find();
   });
 
   if (Items.find().count() == 0) {
