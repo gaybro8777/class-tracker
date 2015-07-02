@@ -10,21 +10,19 @@ if (Meteor.isClient) {
     },
 
     get: function () {
+      debugger;
       this._dep.depend();
       return this._value;
     }
   };
 
   sayHello = function sayHello () {
-    var name = Name.get();
+    var name = Tracker.nonreactive(function computationDisabled () {
+      return Name.get();
+    });
+
     console.log('Hello: ' + name);
   };
 
-  anotherFunc = function anotherFunc () {
-    var name = Name.get();
-    console.log('Hello 2: ' + name);
-  };
-
   Tracker.autorun(sayHello);
-  Tracker.autorun(anotherFunc);
 }
