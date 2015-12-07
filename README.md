@@ -2,7 +2,7 @@
 ## <a href="https://www.eventedmind.com/classes/tracker-026b9a70" target="_blank">Class: Tracker</a>
 
 **Meteor**<br>
-**Core**
+****
 
 Meteor uses a programming technique called 'Reactive Programming' in the browser to automatically propagate data changes through your application. You're probably already using several reactive data sources like Session and Cursor. In this class you'll dive into how the reactive system actually works. You'll explore the data structures and their relationships. Then I'll show you some tips and tricks.
 
